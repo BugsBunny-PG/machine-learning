@@ -1,0 +1,56 @@
+import numpy as np
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+
+iris_data=datasets.load_iris()
+df=pd.DataFrame(data=iris_data,columns=iris_data.feature_names)
+#print(df.columns) Index(['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)'],
+#df.head(10)
+#print(iris_data.target) #satosa,versicolor,verginica
+
+x=iris_data.data
+y=iris_data.target
+#df['target']=y   #add new column target for output 0=satosa ,1=versicolor,verginica
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.33,random_state=0)
+#print(y_train)
+#df
+
+#print those data whoes value 1 in target
+#df[df.target==1].head()   #in data set it print target with its data  versicolor
+#df[df.target==2].head() #verginica
+#df[df.target==0].head() #satosa
+
+KNN_model=KNeighborsClassifier(n_neighbors=40)
+#pick 5 neighbour and find Euclind distance with the help of
+KNN_model.fit(x_train,y_train)
+
+y_pred_40=KNN_model.predict(x_test)
+KNN_model.score(x_test,y_test)*100  #calculate score by manhotan distance and give results how model is accurate
+
+#if we increase the neighbour n_neighbors=7
+k_model=KNeighborsClassifier(n_neighbors=7)
+k_model.fit(x_train,y_train)
+k_model.score(x_test,y_test)*100
+
+#Plot cofusion matrices how many tymes its predict wrong
+#from sklearn.metrics import confusion_matrix
+#predicted value for k=20
+y_pred_7=k_model.predict(x_test)
+#cn=confusion_matrix(y_test,y_prediction)#(true ,predicted)
+
+#y_prediction
+#16 times its satosa and model predicted satosa
+
+
+plt.figure(figsize = (15,5))
+plt.subplot(1,2,1)
+plt.scatter(x_test[:,0], x_test[:,1], c=y_pred_40, marker= '*', s=100,edgecolors='black')
+plt.title("Predicted values with k=40", fontsize=20)
+
+plt.subplot(1,2,2)
+plt.scatter(x_test[:,0], x_test[:,1], c=y_pred_7, marker= '*', s=100,edgecolors='black')
+plt.title("Predicted values with k=7", fontsize=20)
+plt.show()
