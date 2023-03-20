@@ -1,0 +1,63 @@
+import random
+
+#define fitness function
+
+def fitness(chromosoms):
+  num=int(chromosoms,2)  #covert binary to decimal base 2
+  return num*num
+  
+  population_size =100
+chromosoms_length=10
+
+population=[]
+for i in range(population_size):
+  chromosom=''.join(random.choices(['0','1'],k=chromosoms_length) )   #'' is seperatior.join(iterable)
+  population.append(chromosom)
+print(population)
+len(population)
+
+#Evaluate fitnesss score of each chromosom
+fitness_score=[]
+for i in population:
+  fitness_score.append(fitness(i))
+print(fitness_score)
+
+#selection based on tournament selection
+
+parents=[]
+for i in range(10):       #number of parents
+  tou_index=random.sample(range(population_size),5)  # select 5 random index of chromosoms in population list so we can acsess chromosoms
+  #print(tou_indicies)
+  #print(len(tou_indicies))
+  tour_score=[]
+  for j in tou_index:
+    tour_score.append(fitness_score[j] )       #listed fitness score of j indicis 
+  parents.append( population[tou_index[tour_score.index(max(tour_score))]])
+print(parents)
+len(parents)
+
+#crossover one point
+offspring=[]
+for i in range(0,len(parents),2):   #2 means increment by 2
+  parents1=parents[i]
+  parents2=parents[i+1]
+  cross_over_point=random.randint(1,chromosoms_length-1)   #select any one point from length 0ne to chromosom length 
+  offspring1=parents1[:cross_over_point]+parents2[cross_over_point:]
+  offspring2=parents2[:cross_over_point]+parents1[cross_over_point:]
+  offspring.append(offspring1)
+  offspring.append(offspring2)
+print(offspring)
+len(offspring)
+
+#Mutation
+muted_offspring=[]
+for i in range(len(offspring)):
+  chro=offspring[i]
+  index=random.randint(0,len(chro)-1)
+  #print(index)
+  if(chro[index]==1):
+     Mp=chro[:index]+'0'+chro[index+1:]
+  else:
+    Mp=chro[:index]+'1'+chro[index+1:]
+  muted_offspring.append(Mp)
+print(muted_offspring)     
