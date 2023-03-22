@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier,plot_tree
+import matplotlib.pyplot as plt
+
+iris_data=datasets.load_iris()
+#print(data.keys())dict_keys(['data', 'target', 'frame', 'target_names', 'DESCR', 'feature_names', 'filename', 'data_module'])
+df=pd.DataFrame(data=iris_data.data,columns=iris_data.feature_names)
+#print(iris_data.feature_names)['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+df.head(10)
+#df.shape  150 rows and 4 colums
+
+x=df.iloc[:,:]   #data with discard last column
+y=iris_data.target  #output of this data(target)
+#print(y)     #0 for sentosa
+#print(x)
+
+#split data set into training data  and testing data
+x_train,x_test,y_train,y_test=train_test_split(x, y,test_size=0.33, random_state=42) #70% for traininh 30% fro testing  if u want same type then u can assing andom state
+
+
+#print(x_test)
+#x_train.shape
+
+tree_model=DecisionTreeClassifier()
+
+#fit the data
+
+tree_model=tree_model.fit(x_train,y_train)
+#plot tree
+plot_tree(tree_model,filled=True)
